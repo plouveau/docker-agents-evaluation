@@ -38,7 +38,7 @@ Les évaluations s’exécutent dans un conteneur isolé. Le fournisseur Docker 
 Depuis PowerShell, placez-vous à la racine du projet :
 
 ```powershell
-cd C:\Solutions\DockerAgentsTest
+cd C:\Solutions\docker-agents-evaluation
 ```
 
 Le juge utilise le modèle local `mistral:latest`. Comme l’évaluation ne reconnaît pas le fournisseur personnalisé `dmr_http` pour le juge, configurez l’endpoint OpenAI-compatible de Docker Model Runner sur l’hôte et une clé factice (Docker Model Runner n’en exige pas) :
