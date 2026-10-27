@@ -1,0 +1,48 @@
+{
+  "id": "c01e2644-5e24-4861-aab8-15d785e60ad8",
+  "title": "Create a Todo Item",
+  "messages": [
+    {
+      "message": {
+        "message": {
+          "role": "user",
+          "content": "Add this task to my todo list: Prepare the slides for the MBA AI & Data Innovation course."
+        }
+      }
+    },
+    {
+      "message": {
+        "agent_name": "root",
+        "message": {
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "id": "call_create_todo_1",
+              "type": "function",
+              "function": {
+                "name": "create_todo",
+                "arguments": "{\"description\":\"Prepare the slides for the MBA AI & Data Innovation course.\"}"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "message": {
+        "agent_name": "root",
+        "message": {
+          "role": "assistant",
+          "content": "Added “Prepare the slides for the MBA AI & Data Innovation course” to your todo list with status pending."
+        }
+      }
+    }
+  ],
+  "evals": {
+    "relevance": [
+      "The response confirms that the requested task was added to the todo list",
+      "The response identifies the task as pending"
+    ],
+    "size": "S"
+  }
+}

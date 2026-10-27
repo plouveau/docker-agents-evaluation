@@ -1,0 +1,40 @@
+agents:
+  root:
+    model: dmr/ai/qwen3:4b
+    description: Assistant configured for the file, todo, and API evaluations
+    instruction: |
+      Answer the user's request using the appropriate tool.
+      Use the filesystem tools to inspect files and directories.
+      Use the todo tools to manage the task list.
+      Use get_remote_todo to retrieve a todo item from the API, then report its title and completion status.
+      Call each tool only once per request: never repeat a tool call that already succeeded.
+      Once a tool has returned a result, answer the user directly without calling the tool again.
+      
+    toolsets:
+      - type: think
+      - type: filesystem
+      - type: todo
+      - type: api
+        api_config:
+          name: get_remote_todo
+          method: GET
+          endpoint: "https://jsonplaceholder.typicode.com/todos/${id}"
+          instruction: Retrieve a todo item by its numeric ID from the JSONPlaceholder API.
+          args:
+            id:
+              type: string
+              description: Numeric ID of the todo item
+          required:
+            - id
+
+providers:
+  dmr_http:
+    provider: openai
+    api_type: openai_chatcompletions
+    base_url: http://model-runner.docker.internal/engines/v1
+
+flavors:
+  eval-container:
+    agents:
+      root:
+        model: dmr_http/ai/qwen3:4b

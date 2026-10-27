@@ -1,0 +1,48 @@
+{
+  "id": "08dec279-9726-4b9b-81f0-c957ca79cbf0",
+  "title": "Look Up a Todo via an API",
+  "messages": [
+    {
+      "message": {
+        "message": {
+          "role": "user",
+          "content": "Use the API to look up todo item 1 and tell me its title and whether it is completed."
+        }
+      }
+    },
+    {
+      "message": {
+        "agent_name": "root",
+        "message": {
+          "role": "assistant",
+          "tool_calls": [
+            {
+              "id": "call_api_todo_1",
+              "type": "function",
+              "function": {
+                "name": "get_remote_todo",
+                "arguments": "{\"id\":\"1\"}"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "message": {
+        "agent_name": "root",
+        "message": {
+          "role": "assistant",
+          "content": "Todo item 1 is titled “delectus aut autem” and is not completed."
+        }
+      }
+    }
+  ],
+  "evals": {
+    "relevance": [
+      "The response gives the title “delectus aut autem”",
+      "The response correctly says that todo item 1 is not completed"
+    ],
+    "size": "S"
+  }
+}
