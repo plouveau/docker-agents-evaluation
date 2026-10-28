@@ -41,7 +41,7 @@ Depuis PowerShell, placez-vous à la racine du projet :
 cd C:\Solutions\docker-agents-evaluation
 ```
 
-Le juge utilise le modèle local `mistral:latest`. Comme l’évaluation ne reconnaît pas le fournisseur personnalisé `dmr_http` pour le juge, configurez l’endpoint OpenAI-compatible de Docker Model Runner sur l’hôte et une clé factice (Docker Model Runner n’en exige pas) :
+Le juge conversationnel utilise le modèle local `mistral:latest`. Comme l’évaluation ne reconnaît pas le fournisseur personnalisé `dmr_http` pour le juge, configurez l’endpoint OpenAI-compatible de Docker Model Runner sur l’hôte et une clé factice (Docker Model Runner n’en exige pas) :
 
 ```powershell
 $env:OPENAI_BASE_URL = "http://localhost:12434/engines/v1"
@@ -51,12 +51,14 @@ $env:OPENAI_API_KEY = "not-needed"
 Puis lancez les trois scénarios :
 
 ```powershell
-docker agent eval .\agent.yaml .\evals -c 2 --flavor eval-container --judge-model openai/ai/mistral:latest
+docker agent eval .\agent.yaml .\evals -c 3 --flavor eval-container --judge-type llm --judge-model openai/ai/mistral:latest
 ```
 
 Si l’erreur `exec: "docker": executable file not found in $PATH` apparaît encore, vérifiez que la commande inclut bien `--flavor eval-container`. Si le modèle agent échoue ensuite au démarrage avec une erreur propre au modèle ou à `llama.cpp`, la connexion à Model Runner fonctionne : testez le modèle séparément avec `docker model run ai/qwen3:4b "Réponds OK"` et vérifiez que Docker Desktop et Docker Model Runner sont à jour.
 
 Docker Agent affiche les résultats dans le terminal et les enregistre dans `evals/results/`. Les évaluations nécessitent que les outils attendus par les scénarios soient configurés et disponibles pour l’agent dans `agent.yaml` : parcours de répertoire, todo et appel API.
+
+Le mode `evaluator` nécessite un modèle qui implémente l’API de jugement correspondante ; Mistral est un modèle conversationnel et doit donc être utilisé avec `--judge-type llm`, comme dans la commande ci-dessus. Consultez la documentation Docker sur le [choix du juge](https://docs.docker.com/ai/docker-agent/features/evaluation/#choosing-a-judge) pour les différences entre les modes.
 
 Pour l’évaluation du comptage, `working_dir` désigne un dossier isolé sous `evals/working_dirs/`, et non la racine du projet. Le dossier `evals/working_dirs/my-directory/` contient les deux fichiers de test attendus (`file1.txt` et `file2.txt`).
 
